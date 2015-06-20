@@ -18,7 +18,7 @@ If login is successful, the main view should appear with a chat section on the l
 
 ###Tabs
 
-- Dashboard: The dashboard tab has text fields and a choice box for the user to set the stream title and game being played for the channel connected to. This will only work if the bot is an editor/owner in the channel and if the bot has his account set up for livestreaming. This tab will also show a list of users connected to the channel, showing their User Level, name and points. The suerlist will be updated as points are given to the channel - <em>to be changed<em>.
+- Dashboard: The dashboard tab has text fields and a choice box for the user to set the stream title and game being played for the channel connected to. This will only work if the bot is an editor/owner in the channel and if the bot has his account set up for livestreaming. This tab will also show a list of users connected to the channel, showing their User Level, name and points. The suerlist will be updated as points are given to the channel - to be changed.
 - Commands: This tab is where the user will add custom caht commands for the bot to use. Fields for the Command Name, Message and User level required for users to use the commands are included. Added commands will appear in the table below. Please read the detailed command section for more information.
 - Points: The points tab includes the settings for points for the connected channel. Kepping the Points Enabled checkbox checked will add the specified amount points to each connected user in the channel after the inputted time.
 - Points Games: A tab which includes different games the viewers of the channel can join in with.
@@ -27,7 +27,7 @@ If login is successful, the main view should appear with a chat section on the l
 
 ###Commands
 
-- Variables: Varaiables can be used to include information in the command's messages. For example, using <em>"You have %p %pN"<em> as the command message will reply telling the user how many points they have.
+- Variables: Varaiables can be used to include information in the command's messages. For example, using "You have %p %pN" as the command message will reply telling the user how many points they have.
     - %p: replaced with the current points for the user who exectured the command.
     - %pN: replaced with the name of the points defined in the points settings.
     - %pA replaced with the amount of points given after each interval.
