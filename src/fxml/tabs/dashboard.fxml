@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tabs.DashboardTab">
+   <children>
+      <Label layoutX="46.0" layoutY="15.0" text="Stream Title" AnchorPane.leftAnchor="25.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="dashboard_field_title" layoutX="133.0" layoutY="18.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
+      <Button fx:id="dashboard_button_setTitle" layoutX="225.0" layoutY="60.0" mnemonicParsing="false" onAction="#setTitle" text="Set Title" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+      <TextField fx:id="dashboard_field_game" layoutX="112.0" layoutY="105.0" onKeyTyped="#gameTextChanged" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
+      <Label layoutX="25.0" layoutY="105.0" text="Stream Game" AnchorPane.leftAnchor="25.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="dashbaord_button_setGame" layoutX="271.0" layoutY="180.0" mnemonicParsing="false" onAction="#setGame" text="Set Game" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+      <ChoiceBox fx:id="dashboard_choiceBox_games" layoutX="225.0" layoutY="135.0" prefWidth="150.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
+      <TableView fx:id="tableView" layoutY="225.0" prefHeight="172.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="225.0">
+        <columns>
+          <TableColumn fx:id="userLevelCol" editable="false" prefWidth="75.0" sortable="false" text="User Level" />
+          <TableColumn fx:id="viewerNameCol" editable="false" prefWidth="75.0" sortable="false" text="Name" />
+            <TableColumn fx:id="viewerPointsCol" editable="false" prefWidth="75.0" sortable="false" text="Points" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </children>
+</AnchorPane>

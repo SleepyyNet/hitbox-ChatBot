@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.connectionController">
+   <children>
+      <TextField fx:id="connection_field_username" layoutX="235.0" layoutY="55.0" prefHeight="25.0" prefWidth="325.0" text="" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="60.0" />
+      <PasswordField fx:id="connection_field_password" layoutX="226.0" layoutY="105.0" text="" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="60.0" />
+      <TextField fx:id="connection_field_channel" layoutX="235.0" layoutY="155.0" text="" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="60.0" />
+      <Button fx:id="connection_button_connect" layoutX="284.0" layoutY="214.0" mnemonicParsing="false" onAction="#connection_event_connect" prefHeight="25.0" prefWidth="275.0" text="Login" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" />
+      <Label fx:id="connection_label_channel" layoutX="81.0" layoutY="150.0" text="Channel" AnchorPane.leftAnchor="60.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="connection_label_password" layoutX="71.0" layoutY="100.0" text="Password" AnchorPane.leftAnchor="60.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="connection_label_username" layoutX="71.0" layoutY="50.0" text="Username" AnchorPane.leftAnchor="60.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

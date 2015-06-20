@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tabs.PointsTab">
+   <children>
+      <Label layoutX="25.0" layoutY="15.0" text="Points Enabled" AnchorPane.leftAnchor="25.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="25.0" layoutY="60.0" text="Points Name" AnchorPane.leftAnchor="25.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="25.0" layoutY="105.0" text="Points Amount" AnchorPane.leftAnchor="25.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="25.0" layoutY="150.0" text="Points Time" AnchorPane.leftAnchor="25.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="points_field_name" layoutX="226.0" layoutY="63.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
+      <TextField fx:id="points_field_amount" layoutX="226.0" layoutY="108.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
+      <TextField fx:id="points_field_time" layoutX="226.0" layoutY="153.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
+      <CheckBox fx:id="points_checkbox_enabled" layoutX="225.0" layoutY="20.0" mnemonicParsing="false" AnchorPane.leftAnchor="225.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </CheckBox>
+      <Button layoutX="253.0" layoutY="195.0" mnemonicParsing="false" onAction="#save" text="Save" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+   </children>
+</AnchorPane>

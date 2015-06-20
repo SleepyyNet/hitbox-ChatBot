@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript"
+            src="./emotify.min.js">
+    </script>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        p {
+            padding: 5px;
+            margin: 5px;
+        }
+
+        img{
+            max-height: 200px;
+            width: auto;
+        }
+
+        .smiley{
+            max-height: 32px;
+            width: auto;
+        }
+
+        a{
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+
+    $.getJSON("http://api.hitbox.tv/chat/icons/masta.json", function(json){
+        emotify.emoticons("http://edge.sf.hitbox.tv", json.icons);
+    });
+
+</script>
+</body>
+</html>

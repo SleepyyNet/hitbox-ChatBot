@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.tabs.PointsGamesTab">
+   <children>
+      <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <tabs>
+            <Tab text="Raffle">
+               <content>
+                  <AnchorPane prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="raffle_list_entered" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="225.0" layoutY="15.0" text="Ticket Cost:" AnchorPane.leftAnchor="225.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="225.0" layoutY="60.0" text="Max Tickets:" AnchorPane.leftAnchor="225.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="225.0" layoutY="105.0" text="User Level:" AnchorPane.leftAnchor="225.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="raffle_button_start" layoutX="225.0" layoutY="150.0" mnemonicParsing="false" onAction="#startRaffle" prefHeight="25.0" prefWidth="100.0" text="Start" AnchorPane.leftAnchor="225.0" />
+                        <Button fx:id="raffle_button_stop" disable="true" layoutX="348.0" layoutY="150.0" mnemonicParsing="false" onAction="#stopRaffle" prefHeight="25.0" prefWidth="100.0" text="Stop" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="150.0" />
+                        <Button fx:id="raffle_button_draw" disable="true" layoutX="425.0" layoutY="150.0" mnemonicParsing="false" onAction="#drawRaffle" prefHeight="25.0" prefWidth="100.0" text="Draw" AnchorPane.rightAnchor="25.0" />
+                        <Button fx:id="raffle_button_reset" layoutX="225.0" layoutY="195.0" mnemonicParsing="false" onAction="#resetRaffle" text="Reset" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
+                        <TextField fx:id="raffle_field_ticketsCost" layoutX="350.0" layoutY="18.0" prefHeight="25.0" prefWidth="224.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="25.0" />
+                        <TextField fx:id="raffle_field_maxTickets" layoutX="350.0" layoutY="63.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="25.0" />
+                        <TextField fx:id="raffle_field_userLevel" layoutX="350.0" layoutY="108.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="25.0" />
+                        <Label layoutX="225.0" layoutY="240.0" text="Winner:" AnchorPane.leftAnchor="225.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="raffle_label_winner" layoutX="305.0" layoutY="240.0" AnchorPane.leftAnchor="305.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Lottery">
+               <content>
+                  <AnchorPane prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="lottery_list_entered" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="215.0" layoutY="15.0" text="Ticket Cost:" AnchorPane.leftAnchor="225.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="215.0" layoutY="60.0" text="Max Tickets:" AnchorPane.leftAnchor="225.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="215.0" layoutY="105.0" text="User Level:" AnchorPane.leftAnchor="225.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="lottery_field_ticketsCost" layoutX="343.0" layoutY="18.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="25.0" />
+                        <TextField fx:id="lottery_field_maxTickets" layoutX="343.0" layoutY="63.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="25.0" />
+                        <TextField fx:id="lottery_field_userLevel" layoutX="350.0" layoutY="108.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="25.0" />
+                        <Button fx:id="lottery_button_start" layoutX="229.0" layoutY="150.0" mnemonicParsing="false" onAction="#startLottery" prefHeight="25.0" prefWidth="100.0" text="Start" AnchorPane.leftAnchor="225.0" />
+                        <Button fx:id="lottery_button_stop" disable="true" layoutX="358.0" layoutY="150.0" mnemonicParsing="false" onAction="#stopLottery" prefHeight="25.0" prefWidth="100.0" text="Stop" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="150.0" />
+                        <Button fx:id="lottery_button_draw" disable="true" layoutX="366.0" layoutY="150.0" mnemonicParsing="false" onAction="#drawLottery" prefHeight="25.0" prefWidth="100.0" text="Draw" AnchorPane.rightAnchor="25.0" />
+                        <Button fx:id="lottery_button_reset" layoutX="229.0" layoutY="195.0" mnemonicParsing="false" onAction="#resetLottery" prefHeight="25.0" prefWidth="114.0" text="Reset" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
+                        <Label layoutX="225.0" layoutY="240.0" text="Winner:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lottery_label_winner" layoutX="305.0" layoutY="240.0" AnchorPane.leftAnchor="305.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
