@@ -25,7 +25,7 @@ public class Client extends WebSocketClient {
     public Client(String name, String pass, String channel, String IP) throws Exception{
         super(new URI("ws://" + IP + "/socket.io/1/websocket/" + getID(IP)), new Draft_10());
         this.name = name;
-        this.channel = channel;
+        this.channel = channel.toLowerCase();
         connectBlocking();
         joinChannel(name, pass, channel.toLowerCase());
     }
@@ -46,23 +46,41 @@ public class Client extends WebSocketClient {
     }
 
     public void onError(Exception e){
-        Main.consoleController.eout(e.toString());
+        Main.consoleController.eout(e);
         e.printStackTrace();
     }
 
     public void joinChannel(String name, String pass, String channel){
         if (getToken(name, pass) != null) {
-            this.send("5:::{\"name\":\"message\",\"args\":[{\"method\":\"joinChannel\",\"params\":{\"channel\":\"" + channel + "\",\"name\":\"" + name + "\",\"token\":\"" + getToken(name, pass) + "\",\"isAdmin\":false}}]}");
+            this.send("5:::{\"name\":\"message\",\"args\":[{\"method\":\"joinChannel\",\"params\":{\"channel\":\"" + channel + "\",\"name\":\"" + name + "\",\"token\":\"" + getToken(name, pass) + "\",\"isAdmin\":false,\"notify\":true}}]}");
             Main.mainController.connected();
         }
     }
 
+    public void partChannel(){
+        this.sendMessage("5:::{\"name\":\"message\",\"args\":[{\"method\":\"partChannel\",\"params\":{\"channel\":\"" + this.channel + "\",\"name\":\"" + this.name + "\"}}]}");
+    }
+
     public void sendMessage(String message){
-        this.send("5:::{\"name\":\"message\",\"args\":[{\"method\":\"chatMsg\",\"params\":{\"channel\":\"" + this.channel + "\",\"name\":\"" + this.name + "\",\"nameColor\":\"FA5858\",\"text\":\"" + message + "\"}}]}");
+        String nameColor = Main.iniConfig.getProperty("general", "name color");
+        if (nameColor == null) Main.iniConfig.setProperty("general", "name color", "FA5858");
+        this.send("5:::{\"name\":\"message\",\"args\":[{\"method\":\"chatMsg\",\"params\":{\"channel\":\"" + this.channel + "\",\"name\":\"" + this.name + "\",\"nameColor\":\"" + nameColor + "\",\"text\":\"" + message + "\"}}]}");
     }
 
     public void sendPrivateMessage(String name, String message){
         this.send("5:::{\"name\":\"message\",\"args\":[{\"method\":\"directMsg\",\"params\":{\"channel\":\"" + this.channel + "\",\"from\":\"" + this.name + "\",\"to\":\"" + name + "\",\"nameColor\":\"FA5858\",\"text\":\"" + message + "\"}}]}");
+    }
+
+    public void banUser(String name){
+        this.send("5:::{\"name\":\"message\",\"args\":[{\"method\":\"banUser\",\"params\":{\"channel\":\"" + this.channel + "\",\"name\":\"" + name + "\"}}]}");
+    }
+
+    public void unbanUser(String name){
+        this.send("5:::{\"name\":\"message\",\"args\":[{\"method\":\"unbanUser\",\"params\":{\"channel\":\"" + this.channel + "\",\"name\":\"" + name + "\",\"token\":\"\"}}]}");
+    }
+
+    public void timeoutUser(String name, int time){
+        this.send("5:::{\"name\":\"message\",\"args\":[{\"method\":\"kickUser\",\"params\":{\"channel\":\"" + this.channel + "\",\"name\":\"" + name + "\",\"token\":\"\",\"timeout\":" + time + "}}]}");
     }
 
     public static String readUrl(String urlString) {
@@ -79,7 +97,7 @@ public class Client extends WebSocketClient {
             reader.close();
             return buffer.toString();
         }catch (Exception e){
-            Main.consoleController.eout(e.toString());
+            Main.consoleController.eout(e);
             e.printStackTrace();
         }
         return null;
@@ -104,8 +122,8 @@ public class Client extends WebSocketClient {
                 return token;
             }
         }catch (Exception e){
-            Main.consoleController.eout(e.toString());
-            //e.printStackTrace();
+            Main.consoleController.eout(e);
+            e.printStackTrace();
         }
         return null;
     }

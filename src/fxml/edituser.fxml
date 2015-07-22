@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="95.0" maxWidth="505.0" minHeight="95.0" minWidth="505.0" prefHeight="95.0" prefWidth="505.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EditUserController">
+   <children>
+      <Button layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#unban" prefWidth="55.0" text="Unban" AnchorPane.topAnchor="15.0" />
+      <Button layoutX="135.0" layoutY="15.0" mnemonicParsing="false" onAction="#purge" prefWidth="55.0" text="Purge" AnchorPane.topAnchor="15.0" />
+      <Button layoutX="75.0" layoutY="15.0" mnemonicParsing="false" onAction="#ban" prefWidth="55.0" text="Ban" AnchorPane.topAnchor="15.0" />
+      <Button layoutX="195.0" layoutY="15.0" mnemonicParsing="false" onAction="#timeout30s" prefWidth="55.0" text="30s" AnchorPane.topAnchor="15.0" />
+      <Button layoutX="255.0" layoutY="15.0" mnemonicParsing="false" onAction="#timeout2m" prefWidth="55.0" text="2m" AnchorPane.topAnchor="15.0" />
+      <Button layoutX="315.0" layoutY="15.0" mnemonicParsing="false" onAction="#timeout5m" prefWidth="55.0" text="5m" AnchorPane.topAnchor="15.0" />
+      <Button layoutX="375.0" layoutY="15.0" mnemonicParsing="false" onAction="#timeout10m" prefWidth="55.0" text="10m" AnchorPane.topAnchor="15.0" />
+      <TextField fx:id="field_seconds" layoutX="435.0" layoutY="15.0" onAction="#timeoutCustom" prefHeight="25.0" prefWidth="55.0" promptText="Seconds" AnchorPane.topAnchor="15.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="field_points" layoutX="15.0" layoutY="55.0" prefHeight="25.0" prefWidth="55.0" promptText="Points" AnchorPane.topAnchor="55.0" />
+      <Button layoutX="75.0" layoutY="55.0" mnemonicParsing="false" onAction="#addPoints" prefWidth="75.0" text="Add Points" AnchorPane.topAnchor="55.0" />
+      <Button layoutX="155.0" layoutY="55.0" mnemonicParsing="false" onAction="#removePoints" text="Remove Points" AnchorPane.topAnchor="55.0" />
+      <Button layoutX="255.0" layoutY="55.0" mnemonicParsing="false" onAction="#setPoints" text="Set Points" AnchorPane.topAnchor="55.0" />
+   </children>
+</AnchorPane>

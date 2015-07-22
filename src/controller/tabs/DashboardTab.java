@@ -11,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import main.EditUser;
 import main.Main;
 import main.Parser;
 import org.json.JSONObject;
@@ -45,6 +46,8 @@ public class DashboardTab {
 
     public ArrayList userList;
 
+    String subBadge;
+
     public void init(){
         try {
 
@@ -55,21 +58,28 @@ public class DashboardTab {
             tableView.setItems(data);
 
         }catch (Exception e){
-            Main.consoleController.eout(e.toString());
+            Main.consoleController.eout(e);
             e.printStackTrace();
         }
     }
 
     public void fillTable(ArrayList userList){
-        this.userList = userList;
-        if (userList != null) {
-            if (tableView.getItems() != null) data.removeAll(tableView.getItems());
-            for (int i = 0; i < userList.size(); i+=2) {
-                data.add(new Viewer(
-                        userList.get(i+1).toString(),
-                        userList.get(i).toString(),
-                        Main.mainController.root2Controller.pointsTabController.getPoints(userList.get(i).toString())));
+        try {
+            this.userList = userList;
+            if (this.userList != null && !this.userList.isEmpty() && !tableView.getContextMenu().isShowing()) {
+                if (tableView.getItems() != null) {
+                    tableView.getSelectionModel().clearSelection();
+                    data.removeAll(tableView.getItems());
+                }
+                for (int i = 0; i < this.userList.size(); i += 2) {
+                    data.add(new Viewer(
+                            this.userList.get(i + 1).toString(),
+                            this.userList.get(i).toString(),
+                            Main.mainController.detailsController.pointsTabController.getPoints(this.userList.get(i).toString())));
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -137,6 +147,16 @@ public class DashboardTab {
                 "}" +
                 "]}";
         Parser.putUrl("http://www.hitbox.tv/api/media/live/" + Main.config.channel + "?authToken=" + Main.mainController.client.getToken(Main.config.username, Main.config.password), obj);
+    }
+
+    public void editUser(){
+        int id = tableView.getSelectionModel().getSelectedIndex();
+        new EditUser(data.get(id).getViewerName());
+    }
+
+    public int getLevelFromUserList(String name){
+        int level = Integer.parseInt(Main.messageHandler.userList.get(Main.messageHandler.userList.indexOf(name) + 1).toString());
+        return level;
     }
 
 }

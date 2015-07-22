@@ -1,6 +1,5 @@
 package controller.tabs;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import listen.MessageListener;
 import main.Main;
 import main.Parser;
@@ -77,9 +75,9 @@ public class PointsGamesTab implements MessageListener{
     public Label lottery_label_winner;
 
     public void init(){
-        Main.initiator.addListener(this);
-        Main.commandHandler.hardCommands.add("!joinRaffle");
-        Main.commandHandler.hardCommands.add("!joinLottery");
+        Main.initiator.addMessageListener(this);
+        Main.messageHandler.hardCommands.add("!joinRaffle");
+        Main.messageHandler.hardCommands.add("!joinLottery");
 
         raffle_list_entered.setItems(raffleData);
         lottery_list_entered.setItems(lotteryData);
@@ -91,23 +89,19 @@ public class PointsGamesTab implements MessageListener{
         if (!Parser.isBuffer(message) && Parser.isChatMessage(message)){
 
             String text = Parser.getText(message);
-/*            if (text.startsWith("!joinRaffle") && raffleRunning && Parser.getUserLevel(message) >= Integer.parseInt(raffle_field_userLevel.getText())){
-
-                String[] text2 = text.split(" ");
-                if (text2.length < 2 || !StringUtils.isNumeric(text2[1])) joinRaffle(Parser.getName(message).toLowerCase(), 1);
-                else joinRaffle(Parser.getName(message).toLowerCase(), Integer.parseInt(text2[1]));
-
-            }*/
 
             String[] text2 = text.split(" ");
-            if (text2[0].equals("!joinRaffle") && raffleRunning && Parser.getUserLevel(message) >= Integer.parseInt(raffle_field_userLevel.getText())){
+            if (text2[0].toLowerCase().equals("!joinraffle") && raffleRunning && Parser.getUserLevel(message) >= Integer.parseInt(raffle_field_userLevel.getText())){
                 if (text2.length < 2 || !text2[1].matches("[0-9]+")) joinRaffle(Parser.getName(message).toLowerCase(), 1);
                 else joinRaffle(Parser.getName(message).toLowerCase(), Integer.parseInt(text2[1]));
-            }else if (text2[0].equals("!joinLottery") && lotteryRunning && Parser.getUserLevel(message) >= Integer.parseInt(lottery_field_userLevel.getText())){
+            }else if (text2[0].toLowerCase().equals("!joinlottery") && lotteryRunning && Parser.getUserLevel(message) >= Integer.parseInt(lottery_field_userLevel.getText())){
                 if (text2.length < 2 || !text2[1].matches("[0-9]+")) joinLottery(Parser.getName(message).toLowerCase(), 1);
                 else joinLottery(Parser.getName(message).toLowerCase(), Integer.parseInt(text2[1]));
+            }else if (text.toLowerCase().equals("!printraffle") && Parser.getUserLevel(message) >= 2){
+                if (raffleWinner != null) Main.mainController.client.sendMessage("The winner of the raffle is @" + raffleWinner);
+            }else if (text.toLowerCase().equals("!printlottery") && Parser.getUserLevel(message) >= 2){
+                if (lotteryWinner != null) Main.mainController.client.sendMessage("The winner of the lottery is @" + lotteryWinner);
             }
-
 
         }
 
@@ -119,6 +113,7 @@ public class PointsGamesTab implements MessageListener{
     private boolean raffleRunning = false;
     private ArrayList raffleEntriesLong;
     private ArrayList raffleEntriesShort;
+    private String raffleWinner;
 
     public void startRaffle(ActionEvent event){
         if (!raffle_field_ticketsCost.getText().isEmpty() && raffle_field_ticketsCost.getText().matches("[0-9]+") && !raffle_field_maxTickets.getText().isEmpty() && raffle_field_maxTickets.getText().matches("[0-9]+") && !raffle_field_userLevel.getText().isEmpty() && raffle_field_userLevel.getText().matches("[0-9]+")) {
@@ -139,13 +134,17 @@ public class PointsGamesTab implements MessageListener{
     }
 
     public void drawRaffle(ActionEvent event){
+        raffleRunning = false;
+
         if (raffleEntriesLong.size() > 0) {
-            String winner = raffleEntriesLong.get(new Random().nextInt(raffleEntriesLong.size()) + 0).toString();
-            raffle_label_winner.setText(winner);
+            raffleWinner = raffleEntriesLong.get(new Random().nextInt(raffleEntriesLong.size()) + 0).toString();
+            raffle_label_winner.setText(raffleWinner);
         }
     }
 
     public void resetRaffle(ActionEvent event){
+        raffleRunning = false;
+
         raffle_button_start.setDisable(false);
         raffle_button_stop.setDisable(true);
         raffle_button_draw.setDisable(true);
@@ -157,14 +156,13 @@ public class PointsGamesTab implements MessageListener{
 
     public void joinRaffle(String name, int amount){
         if (amount <= Integer.parseInt(raffle_field_maxTickets.getText()) && Collections.frequency(raffleEntriesLong, name) < Integer.parseInt(raffle_field_maxTickets.getText())){
-            if (amount * Integer.parseInt(raffle_field_ticketsCost.getText()) <= Integer.parseInt(Main.mainController.root2Controller.pointsTabController.getPoints(name))){
+            if (amount * Integer.parseInt(raffle_field_ticketsCost.getText()) <= Integer.parseInt(Main.mainController.detailsController.pointsTabController.getPoints(name))){
 
                 for (int i = 0; i < amount; i++) {
                     raffleEntriesLong.add(name);
                 }
 
                 if (!raffleEntriesShort.contains(name)){
-                    System.out.println("TRUE 1");
                     raffleEntriesShort.add(name);
                     raffleEntriesShort.add(amount);
                     raffleData.removeAll(raffle_list_entered.getItems());
@@ -172,7 +170,6 @@ public class PointsGamesTab implements MessageListener{
                         raffleData.add(raffleEntriesShort.get(i) + " (" + raffleEntriesShort.get(i+1) + ")");
                     }
                 } else {
-                    System.out.println("TRUE 2");
                     raffleEntriesShort.set(raffleEntriesShort.indexOf(name) + 1, Integer.parseInt(raffleEntriesShort.get(raffleEntriesShort.indexOf(name) + 1).toString()) + amount);
                     raffleData.removeAll(raffle_list_entered.getItems());
                     for (int i = 0; i < raffleEntriesShort.size(); i+=2) {
@@ -180,12 +177,15 @@ public class PointsGamesTab implements MessageListener{
                     }
                 }
 
-                Main.mainController.root2Controller.pointsTabController.removePoints(name, amount * Integer.parseInt(raffle_field_ticketsCost.getText()));
-                System.out.println(raffleEntriesLong);
+                Main.mainController.detailsController.pointsTabController.removePoints(name, amount * Integer.parseInt(raffle_field_ticketsCost.getText()));
             }else {
+                Main.mainController.client.sendMessage("@" + name + " you do not have enough points to enter this raffle.");
                 System.out.println(name + " does not have enough points to enter this raffle.");
             }
-        } else System.out.println(name + " has entered with too many tickets.");
+        } else {
+            Main.mainController.client.sendMessage("@" + name + " you have entered this raffle with too many tickets.");
+            System.out.println(name + " has entered with too many tickets.");
+        }
     }
 
     //### LOTTERY
@@ -194,6 +194,7 @@ public class PointsGamesTab implements MessageListener{
     private boolean lotteryRunning = false;
     private ArrayList lotteryEntriesLong;
     private ArrayList lotteryEntriesShort;
+    private String lotteryWinner;
 
     public void startLottery(ActionEvent event){
         if (!lottery_field_ticketsCost.getText().isEmpty() && lottery_field_ticketsCost.getText().matches("[0-9]+") && !lottery_field_maxTickets.getText().isEmpty() && lottery_field_maxTickets.getText().matches("[0-9]+") && !lottery_field_userLevel.getText().isEmpty() && lottery_field_userLevel.getText().matches("[0-9]+")) {
@@ -215,13 +216,13 @@ public class PointsGamesTab implements MessageListener{
 
     public void drawLottery(ActionEvent event){
         if (lotteryEntriesLong.size() > 0) {
-            String winner = lotteryEntriesLong.get(new Random().nextInt(lotteryEntriesLong.size()) + 0).toString();
-            lottery_label_winner.setText(winner);
+            lotteryWinner = lotteryEntriesLong.get(new Random().nextInt(lotteryEntriesLong.size()) + 0).toString();
+            lottery_label_winner.setText(lotteryWinner);
         }
     }
 
     public void resetLottery(ActionEvent event){
-        if (!lottery_label_winner.getText().isEmpty()) Main.mainController.root2Controller.pointsTabController.addPoints(lottery_label_winner.getText(), lotteryEntriesLong.size() * Integer.parseInt(lottery_field_ticketsCost.getText()) + "");
+        if (!lottery_label_winner.getText().isEmpty()) Main.mainController.detailsController.pointsTabController.addPoints(lottery_label_winner.getText(), lotteryEntriesLong.size() * Integer.parseInt(lottery_field_ticketsCost.getText()));
 
         lottery_button_start.setDisable(false);
         lottery_button_stop.setDisable(true);
@@ -234,14 +235,13 @@ public class PointsGamesTab implements MessageListener{
 
     public void joinLottery(String name, int amount){
         if (amount <= Integer.parseInt(lottery_field_maxTickets.getText()) && Collections.frequency(lotteryEntriesLong, name) < Integer.parseInt(lottery_field_maxTickets.getText())){
-            if (amount * Integer.parseInt(lottery_field_ticketsCost.getText()) <= Integer.parseInt(Main.mainController.root2Controller.pointsTabController.getPoints(name))){
+            if (amount * Integer.parseInt(lottery_field_ticketsCost.getText()) <= Integer.parseInt(Main.mainController.detailsController.pointsTabController.getPoints(name))){
 
                 for (int i = 0; i < amount; i++) {
                     lotteryEntriesLong.add(name);
                 }
 
                 if (!lotteryEntriesShort.contains(name)){
-                    System.out.println("TRUE 1");
                     lotteryEntriesShort.add(name);
                     lotteryEntriesShort.add(amount);
                     lotteryData.removeAll(lottery_list_entered.getItems());
@@ -249,7 +249,6 @@ public class PointsGamesTab implements MessageListener{
                         lotteryData.add(lotteryEntriesShort.get(i) + " (" + lotteryEntriesShort.get(i+1) + ")");
                     }
                 } else {
-                    System.out.println("TRUE 2");
                     lotteryEntriesShort.set(lotteryEntriesShort.indexOf(name) + 1, Integer.parseInt(lotteryEntriesShort.get(lotteryEntriesShort.indexOf(name) + 1).toString()) + amount);
                     lotteryData.removeAll(lottery_list_entered.getItems());
                     for (int i = 0; i < lotteryEntriesShort.size(); i+=2) {
@@ -257,12 +256,15 @@ public class PointsGamesTab implements MessageListener{
                     }
                 }
 
-                Main.mainController.root2Controller.pointsTabController.removePoints(name, amount * Integer.parseInt(lottery_field_ticketsCost.getText()));
-                System.out.println(lotteryEntriesLong);
+                Main.mainController.detailsController.pointsTabController.removePoints(name, amount * Integer.parseInt(lottery_field_ticketsCost.getText()));
             }else {
+                Main.mainController.client.sendMessage("@" + name + " you do not have enough points to enter this lottery.");
                 System.out.println(name + " does not have enough points to enter this lottery.");
             }
-        } else System.out.println(name + " has entered with too many tickets.");
+        } else {
+            Main.mainController.client.sendMessage("@" + name + " you have entered this lottery with too many tickets.");
+            System.out.println(name + " has entered with too many tickets.");
+        }
     }
 
 

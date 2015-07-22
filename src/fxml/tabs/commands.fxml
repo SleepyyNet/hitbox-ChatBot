@@ -20,19 +20,27 @@
       </Label>
       <TextField fx:id="commands_field_commandName1" layoutX="225.0" layoutY="18.0" prefHeight="25.0" prefWidth="362.0" promptText="Command Name (E.g !test)" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
       <TextField fx:id="commands_field_commandMessage" layoutX="225.0" layoutY="58.0" prefHeight="25.0" prefWidth="362.0" promptText="Message" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
-      <TextField fx:id="commands_field_userLevel" layoutX="225.0" layoutY="98.0" prefHeight="25.0" prefWidth="362.0" promptText="User Level" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
+      <TextField fx:id="commands_field_userLevel" layoutX="225.0" layoutY="98.0" prefHeight="25.0" prefWidth="362.0" promptText="User Level (1, 2, 3, 4, 5, or 6)" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
       <TextField fx:id="commands_field_commandName2" layoutX="225.0" layoutY="162.0" promptText="Command Name" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="25.0" />
-      <TableView fx:id="commands_table" editable="true" layoutY="237.0" prefHeight="163.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="237.0">
+      <TableView fx:id="table" editable="true" layoutY="237.0" prefHeight="163.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="237.0">
         <columns>
-          <TableColumn fx:id="userLevelCol" editable="false" minWidth="-1.0" prefWidth="-1.0" text="User Level" />
-          <TableColumn fx:id="commandNameCol" minWidth="-1.0" prefWidth="-1.0" text="Command Name" />
-            <TableColumn fx:id="commandMessageCol" minWidth="-1.0" prefWidth="-1.0" text="Message" />
+          <TableColumn fx:id="userLevelCol" minWidth="-1.0" onEditCommit="#editCommand" prefWidth="-1.0" text="User Level" />
+          <TableColumn fx:id="commandNameCol" minWidth="-1.0" onEditCommit="#editCommand" prefWidth="-1.0" text="Command Name" />
+            <TableColumn fx:id="commandMessageCol" minWidth="-1.0" onEditCommit="#editCommand" prefWidth="-1.0" text="Message" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#removeCommand" text="Remove" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
       </TableView>
       <Button fx:id="commands_button_add" layoutX="25.0" layoutY="124.0" mnemonicParsing="false" onAction="#commands_event_add" prefHeight="25.0" prefWidth="118.0" text="Add Command" AnchorPane.leftAnchor="25.0" />
       <Button layoutX="25.0" layoutY="194.0" mnemonicParsing="false" onAction="#commands_event_remove" text="Remove Command" AnchorPane.leftAnchor="25.0" />
+      <Button layoutX="457.0" layoutY="194.0" mnemonicParsing="false" onAction="#loadEditor" text="Advanced Editor" AnchorPane.rightAnchor="25.0" />
    </children>
 </AnchorPane>

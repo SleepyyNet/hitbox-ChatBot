@@ -5,7 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.connectionController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConnectionController">
    <children>
       <TextField fx:id="connection_field_username" layoutX="235.0" layoutY="55.0" prefHeight="25.0" prefWidth="325.0" text="" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="60.0" />
       <PasswordField fx:id="connection_field_password" layoutX="226.0" layoutY="105.0" text="" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="60.0" />
@@ -26,5 +26,6 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <CheckBox fx:id="checkbox_savePassword" layoutX="60.0" layoutY="192.0" mnemonicParsing="false" text="Save Password (Password will be saved as plain text in config.txt)" />
    </children>
 </AnchorPane>

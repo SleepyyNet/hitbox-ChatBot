@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import javax.crypto.Cipher;
 
 public class Parser {
     public static String readUrl(String urlString) {
@@ -24,22 +25,40 @@ public class Parser {
             reader.close();
             return buffer.toString();
         }catch (Exception e){
-            Main.consoleController.eout(e.toString());
+            Main.consoleController.eout(e);
             e.printStackTrace();
         }
         return null;
     }
 
-    public static String readFile(String fileName){
+    public static String readFile(File file){
         try {
-            File path = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath().toString().substring(1));
-            File file = new File(path.getParent() + "/resources/commands.txt");
-            String content = new Scanner(file, "UTF-8").useDelimiter("\\Z").next();
-            return content;
+            if (file.length() > 0) {
+                String content = new Scanner(file, "UTF-8").useDelimiter("\\Z").next();
+                return content;
+            }
+
+            return "";
         } catch (Exception e){
-            Main.consoleController.eout(e.toString());
+            Main.consoleController.eout(e);
             e.printStackTrace();
-            return null;
+            return "";
+        }
+    }
+
+    public static void writeFile(File file, String content) {
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file);
+
+            fw.write(content + "\n");
+
+            fw.close();
+        }catch (Exception e){
+            Main.consoleController.eout(e);
+            e.printStackTrace();
         }
     }
 
@@ -62,6 +81,7 @@ public class Parser {
             System.err.println(connection.getResponseCode());
 
         } catch (Exception e){
+            Main.consoleController.eout(e);
             e.printStackTrace();
         }
     }
@@ -79,7 +99,7 @@ public class Parser {
 
             fw.close();
         }catch (Exception e){
-            Main.consoleController.eout(e.toString());
+            Main.consoleController.eout(e);
             e.printStackTrace();
         }
     }
@@ -89,7 +109,7 @@ public class Parser {
             String content = new Scanner(new File(Main.rootPath + "/resources/" + fileName), "UTF-8").useDelimiter("\\Z").next();
             return content;
         } catch (Exception e){
-            Main.consoleController.eout(e.toString());
+            Main.consoleController.eout(e);
             e.printStackTrace();
             return null;
         }
@@ -100,7 +120,7 @@ public class Parser {
             String method = obj.getString("method");
             return method;
         } catch (Exception e){
-            Main.consoleController.eout(e.toString());
+            Main.consoleController.eout(e);
             e.printStackTrace();
             return null;
         }
@@ -293,4 +313,5 @@ public class Parser {
 
         return userList;
     }
+
 }

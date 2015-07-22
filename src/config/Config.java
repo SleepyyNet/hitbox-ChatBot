@@ -13,7 +13,10 @@ import java.util.ArrayList;
 
 public class Config {
 
+    public String version = "0.0.7";
+
     public boolean consoleShown = false;
+    public boolean settingsShown = false;
 
     public String username;
     public String password;
@@ -31,12 +34,23 @@ public class Config {
 
             obj = new JSONObject(readConfig());
         }catch (Exception e){
-            Main.consoleController.eout(e.toString());
+            Main.consoleController.eout(e);
             e.printStackTrace();
         }
     }
 
     public void setProperty(String header, String key, String value){
+        if (obj.has(header)) {
+            obj.getJSONObject(header).put(key, value);
+            saveConfig();
+        }
+        else {
+            obj.put(header, new JSONObject().put(key, value));
+            saveConfig();
+        }
+    }
+
+    public void setProperty(String header, String key, JSONObject value){
         if (obj.has(header)) {
             obj.getJSONObject(header).put(key, value);
             saveConfig();
@@ -71,9 +85,10 @@ public class Config {
             PrintWriter writer = new PrintWriter(Main.rootPath + "/resources/" +  Main.config.channel + ".txt");
             writer.write(obj.toString());
             writer.close();
-        }catch(IOException i)
+        }catch(Exception e)
         {
-            i.printStackTrace();
+            Main.consoleController.eout(e);
+            e.printStackTrace();
         }
     }
 
@@ -83,7 +98,8 @@ public class Config {
             if (text.length() > 0) return text;
             return "{}";
         }catch (Exception e){
-            //e.printStackTrace();
+            Main.consoleController.eout(e);
+            e.printStackTrace();
         }
         return "{}";
     }

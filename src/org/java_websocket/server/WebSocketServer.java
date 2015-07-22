@@ -154,7 +154,7 @@ public abstract class WebSocketServer extends WebSocketAdapter implements Runnab
 
 	/**
 	 * Starts the server selectorthread that binds to the currently set port number and
-	 * listeners for WebSocket connection requests. Creates a fixed thread pool with the size {@link WebSocketServer#DECODERS}<br>
+	 * messageListeners for WebSocket connection requests. Creates a fixed thread pool with the size {@link WebSocketServer#DECODERS}<br>
 	 * May only be called once.
 	 *
 	 * Alternatively you can call {@link WebSocketServer#run()} directly.

@@ -22,7 +22,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="25.0" layoutY="150.0" text="Points Time" AnchorPane.leftAnchor="25.0">
+      <Label layoutX="25.0" layoutY="150.0" text="Points Time (seconds)" AnchorPane.leftAnchor="25.0">
          <font>
             <Font size="20.0" />
          </font>

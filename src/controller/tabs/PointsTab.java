@@ -5,20 +5,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import main.Main;
-import org.json.JSONObject;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class PointsTab {
 
@@ -62,6 +53,7 @@ public class PointsTab {
 
         if (Main.config.getProperty("points-settings", "points name") == null) {
             Main.config.setProperty("points-settings", "points name", "Points");
+            pointsName = Main.config.getProperty("points-settings", "points name");
             points_field_name.setText("Points");
         } else {
             points_field_name.setText(Main.config.getProperty("points-settings", "points name"));
@@ -70,6 +62,7 @@ public class PointsTab {
 
         if (Main.config.getProperty("points-settings", "points amount") == null) {
             Main.config.setProperty("points-settings", "points amount", "10");
+            pointsAmount = Main.config.getProperty("points-settings", "points amount");
             points_field_amount.setText("10");
         } else {
             points_field_amount.setText(Main.config.getProperty("points-settings", "points amount"));
@@ -78,6 +71,7 @@ public class PointsTab {
 
         if (Main.config.getProperty("points-settings", "points time") == null) {
             Main.config.setProperty("points-settings", "points time", "60");
+            pointsTime = Main.config.getProperty("points-settings", "points time");
             points_field_time.setText("60");
         } else {
             points_field_time.setText(Main.config.getProperty("points-settings", "points time"));
@@ -88,21 +82,41 @@ public class PointsTab {
 
     }
 
-    public void addPoints(String userName, String amount){
-        if (Main.config.getProperty("points", userName) != null) {
-            Main.config.setProperty("points", userName, Integer.parseInt(Main.config.getProperty("points", userName)) + Integer.parseInt(amount) + "");
-            Main.mainController.root2Controller.dashboardTabController.fillTable(Main.commandHandler.userList);
+    public void addPoints(String userName, int amount){
+        userName = userName.toLowerCase();
+        if (Main.config.getProperty("points", userName) != null || !Main.config.getProperty("points", userName).isEmpty()) {
+            Main.config.setProperty("points", userName, Integer.parseInt(Main.config.getProperty("points", userName)) + amount + "");
+            //Main.mainController.detailsController.dashboardTabController.fillTable(Main.commandHandler.userList);
+        } else {
+            Main.config.setProperty("points", userName, amount + "");
+            //Main.mainController.detailsController.dashboardTabController.fillTable(Main.commandHandler.userList);
         }
     }
 
     public void removePoints(String userName, int amount){
-        if (Main.config.getProperty("points", userName) != null){
+        userName = userName.toLowerCase();
+        if (Main.config.getProperty("points", userName) != null || !Main.config.getProperty("points", userName).isEmpty()){
             Main.config.setProperty("points", userName, (Integer.parseInt(getPoints(userName)) - amount) + "");
-            Main.mainController.root2Controller.dashboardTabController.fillTable(Main.commandHandler.userList);
+            //Main.mainController.detailsController.dashboardTabController.fillTable(Main.commandHandler.userList);
+        } else {
+            Main.config.setProperty("points", userName, "0");
+            //Main.mainController.detailsController.dashboardTabController.fillTable(Main.commandHandler.userList);
+        }
+    }
+
+    public void setPoints(String userName, int amount){
+        userName = userName.toLowerCase();
+        if (Main.config.getProperty("points", userName) != null || !Main.config.getProperty("points", userName).isEmpty()){
+            Main.config.setProperty("points", userName, amount + "");
+            //Main.mainController.detailsController.dashboardTabController.fillTable(Main.commandHandler.userList);
+        } else {
+            Main.config.setProperty("points", userName, amount + "");
+            //Main.mainController.detailsController.dashboardTabController.fillTable(Main.commandHandler.userList);
         }
     }
 
     public String getPoints(String userName){
+        if (Main.config.getProperty("points", userName) == null) Main.config.setProperty("points", userName, "0");
         return Main.config.getProperty("points", userName);
     }
 
@@ -124,7 +138,7 @@ public class PointsTab {
             try {
                 //t.wait();
             }catch (Exception e){
-                Main.consoleController.eout(e.toString());
+                Main.consoleController.eout(e);
                 e.printStackTrace();
             }
         }
@@ -136,7 +150,7 @@ public class PointsTab {
             try {
                 //t.notify();
             }catch (Exception e){
-                Main.consoleController.eout(e.toString());
+                Main.consoleController.eout(e);
                 e.printStackTrace();
             }
         }
@@ -154,26 +168,23 @@ public class PointsTab {
                         }
                         while (true) {
                             if (Main.config.getProperty("points-settings", "points enabled").equals("true")) {
-                                if (Main.config.connected) Main.mainController.client.getUserList();
-                                ArrayList userList;
-                                if (Main.commandHandler.userList != null) {
-                                    userList = Main.commandHandler.userList;
+                                if (Main.messageHandler.userList != null) {
+                                    ArrayList userList = Main.messageHandler.userList;
                                     for (int i = 0; i < userList.size(); i += 2) {
                                         if (userList.get(i) != null && userList.get(i + 1) != null) {
-                                            if (Main.config.getProperty("points", userList.get(i).toString()) != null)
-                                                addPoints(userList.get(i).toString(), pointsAmount);
+                                            if (Main.config.getProperty("points", userList.get(i).toString()) != null && pointsAmount != null && pointsAmount.matches("[0-9]+"))
+                                                addPoints(userList.get(i).toString(), Integer.parseInt(pointsAmount));
                                             else Main.config.setProperty("points", userList.get(i).toString(), "0");
                                         }
                                     }
+                                    Main.config.saveConfig();
+                                    Main.mainController.detailsController.dashboardTabController.fillTable(Main.messageHandler.userList);
                                 }
-                            }
-                            else {
-                                if (Main.config.connected) Main.mainController.client.getUserList();
                             }
                             Thread.sleep(Integer.parseInt(Main.config.getProperty("points-settings", "points time")) * 1000);
                         }
                     } catch (Exception e) {
-                        Main.consoleController.eout(e.toString());
+                        Main.consoleController.eout(e);
                         e.printStackTrace();
                     }
                 }
@@ -182,29 +193,17 @@ public class PointsTab {
             t = new Thread(runnable);
             t.start();
         } catch (Exception e) {
-            Main.consoleController.eout(e.toString());
+            Main.consoleController.eout(e);
             e.printStackTrace();
         }
     }
-
-/*    public void savePoints(){
-        try
-        {
-            PrintWriter writer = new PrintWriter(Main.rootPath + "/resources/" +  Main.config.channel + "-points.ini");
-            writer.write(obj.toString());
-            writer.close();
-        }catch(IOException i)
-        {
-            i.printStackTrace();
-        }
-    }*/
 
     public String readPoints(){
         try {
             String text = new String(Files.readAllBytes(Paths.get(Main.rootPath + "/resources/" +  Main.config.channel + "-points.ini")), StandardCharsets.UTF_8);
             return text;
         }catch (Exception e){
-            Main.consoleController.eout(e.toString());
+            Main.consoleController.eout(e);
             e.printStackTrace();
         }
         return "{}";
