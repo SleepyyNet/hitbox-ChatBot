@@ -43,7 +43,7 @@ My aim for tBot was for a community driven bot where users can create and share 
 
 | Function                            | Use                                                                                   |
 |-------------------------------------|---------------------------------------------------------------------------------------|
-| function messageReceived(message){  | Executes when any message is sent by the hitbox server.                               |
+| function newMessage(message){       | Executes when any message is sent by the hitbox server.                               |
 | function onInfoMsg(message){        | Executes when the server sends a message with the method "infoMsg".                   |
 | function onStreamUpdate(message){   | Executes when there is an update to the stream information, e.g Game Played or Title. |
 | function onHostUpdate(message){     | Executes when the host information is changed.                                        |
